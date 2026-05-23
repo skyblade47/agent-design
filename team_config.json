@@ -1,0 +1,62 @@
+{
+  "name": "claw-game-2",
+  "leadAgentId": "auto",
+  "description": "Claw+AI写作教练双项目Agent团队 - 12人完整编制",
+  "members": [
+    {
+      "memberId": "team-lead@claw-game-2",
+      "name": "team-lead",
+      "role": "团队总协调分发层"
+    },
+    {
+      "memberId": "pm-claw@claw-game-2",
+      "name": "pm-claw",
+      "role": "Claw项目负责人"
+    },
+    {
+      "memberId": "pm-writer@claw-game-2",
+      "name": "pm-writer",
+      "role": "AI写作教练项目负责人"
+    },
+    {
+      "memberId": "programmer-a@claw-game-2",
+      "name": "programmer-a",
+      "role": "Claw程序员A-状态机+网格"
+    },
+    {
+      "memberId": "programmer-b@claw-game-2",
+      "name": "programmer-b",
+      "role": "Claw程序员B-手牌+交互"
+    },
+    {
+      "memberId": "reviewer@claw-game-2",
+      "name": "reviewer",
+      "role": "全面审核 Claw 代码库"
+    },
+    {
+      "memberId": "programmer-writer@claw-game-2",
+      "name": "programmer-writer",
+      "role": "AI写作教练项目编程"
+    },
+    {
+      "memberId": "game-artist@claw-game-2",
+      "name": "game-artist",
+      "role": "Claw游戏美术-素材生成"
+    },
+    {
+      "memberId": "godot-ui@claw-game-2",
+      "name": "godot-ui",
+      "role": "Claw Godot UI设计师"
+    },
+    {
+      "memberId": "ui-designer@claw-game-2",
+      "name": "ui-designer",
+      "role": "AI写作教练UI/UX设计师"
+    },
+    {
+      "memberId": "react-dev@claw-game-2",
+      "name": "react-dev",
+      "role": "AI写作教练React前端开发"
+    }
+  ]
+}
