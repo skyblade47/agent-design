@@ -1,11 +1,4 @@
-# Agent Design Project
-# 忽略系统文件
+# Agent Design
+*.log
 .DS_Store
 Thumbs.db
-
-# 忽略IDE配置
-.vscode/
-.idea/
-
-# 忽略node（如果有测试脚本）
-node_modules/

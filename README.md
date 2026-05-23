@@ -1,126 +1,118 @@
-# 🏗️ 项目开发Agent团队设计方案
+# 🏗️ DevAgent Framework — 通用软件开发多Agent协作框架
 
-> 版本：v2.0  
-> 日期：2026-05-23  
-> 目的：将一个AI Agent驱动的软件开发团队设计，成立为独立项目，供任何多项目开发场景复用。
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)]()
 
----
-
-## 项目概述
-
-本项目定义了一套完整的**AI Agent驱动的多项目软件开发团队架构**。核心理念是将软件开发团队角色（总监、PM、程序员、美术、UI设计等）映射为专门的AI Agent，通过Team Mode实现异步协作。
-
-当前团队为两个实际项目服务：
-- 🐱 **Claw·猫咪大战** — Godot 4.4 回合制卡牌策略游戏（7人子团队）
-- ✍️ **AI写作教练** — Electron+React 写作辅助工具（4人子团队）
+> 一套通用的、可复用的AI Agent团队设计方案。将软件工程的最佳实践（SOP、Code Review、CI/CD）与多Agent协作架构相结合，让AI Agent像专业软件团队一样工作。
 
 ---
 
-## 目录结构
+## 📖 设计理念
+
+本框架的核心理念受以下项目的启发：
+
+| 参考项目 | 核心贡献 | Stars |
+|---------|---------|-------|
+| [MetaGPT](https://github.com/geekan/MetaGPT) | SOP驱动的软件公司多Agent协作 | 50k+ |
+| [CrewAI](https://github.com/crewAIInc/crewAI) | 角色+工具+目标的轻量编排 | 25k+ |
+| [AutoGen](https://github.com/microsoft/autogen) | 多Agent对话式协作 | 40k+ |
+| [agentic-design-patterns](https://github.com/zeljkoavramovic/agentic-design-patterns) | 29种Agentic设计模式教程 | — |
+| [agentic-system-prompts](https://github.com/tallesborges/agentic-system-prompts) | 生产级Agent系统提示词收集 | — |
+
+**核心公式**: `Software = SOP(Agent Team)` — 将标准化操作流程应用于由AI Agent组成的团队。
+
+---
+
+## 🏛️ 项目结构
 
 ```
 agent-design/
-├── README.md                    # 本文件 - 项目概述
-├── AGENT_WORKFLOW.md            # Agent工作流设定（权威文档）
-├── team_composition_plan.md     # 完整团队构成方案（12人+5预留）
-├── team_config.json             # 团队运行时配置
-├── agent_prompts/               # 各Agent角色提示词
-│   ├── team-lead.md             # 分发层/总协调
-│   ├── pm-claw.md               # Claw项目负责人
-│   ├── pm-writer.md             # AI写作教练项目负责人
-│   ├── programmer-a.md          # 状态机+网格程序员
-│   ├── programmer-b.md          # 手牌+交互程序员
-│   ├── game-artist.md           # 2D游戏美术
-│   ├── godot-ui.md              # Godot UI设计师
-│   ├── reviewer.md              # 代码审查
-│   ├── programmer-writer.md     # 全栈开发
-│   ├── react-dev.md             # React前端开发
-│   └── ui-designer.md           # UI/UX设计
-└── templates/                   # 模板文件
-    └── pm_intake_template.md    # PM启动诊断模板
+├── README.md                    # 项目总览（本文件）
+├── ARCHITECTURE.md              # 多Agent架构模式详解
+├── AGENT_WORKFLOW.md            # SOP驱动的开发工作流
+├── ROLES_SPECIFICATION.md       # 通用角色定义与职责矩阵
+├── PROMPT_ENGINEERING.md        # 系统提示词工程设计方法论
+├── COMMUNICATION_PROTOCOL.md    # Agent间通信协议设计
+├── agent_prompts/               # 各角色系统提示词模板
+│   ├── team-lead.md             # 技术负责人/团队协调者
+│   ├── product-manager.md       # 产品经理
+│   ├── technical-architect.md   # 技术架构师
+│   ├── project-manager.md       # 项目经理
+│   ├── frontend-developer.md    # 前端开发工程师
+│   ├── backend-developer.md     # 后端开发工程师
+│   ├── fullstack-developer.md   # 全栈开发工程师
+│   ├── qa-engineer.md           # 测试/质量工程师
+│   ├── devops-engineer.md       # DevOps/基础设施工程师
+│   ├── security-reviewer.md     # 安全审查工程师
+│   ├── ui-ux-designer.md        # UI/UX设计师
+│   └── technical-writer.md      # 技术文档工程师
+├── templates/                   # 项目模板
+│   ├── project_intake.md        # 项目需求摄入模板
+│   ├── tech_spec_template.md    # 技术规格文档模板
+│   └── review_checklist.md      # 代码审查检查清单
+└── .gitignore
 ```
 
 ---
 
-## 团队架构
+## 🚀 快速开始
 
-```
-用户 (User)
-  │
-  ▼
-team-lead (分发层/总协调)
-  ├── 🐱 Claw项目组 (7人)
-  │     ├── pm-claw (PM)
-  │     ├── programmer-a (状态机+网格)
-  │     ├── programmer-b (手牌+交互)
-  │     ├── game-artist (2D美术)
-  │     ├── godot-ui (UI设计)
-  │     └── reviewer (代码审查)
-  │
-  └── ✍️ AI写作教练 (4人)
-        ├── pm-writer (PM)
-        ├── programmer-writer (全栈)
-        ├── react-dev (前端)
-        └── ui-designer (UX设计)
-```
+### 1. 理解架构
+阅读 [ARCHITECTURE.md](./ARCHITECTURE.md) 了解5种核心多Agent协作模式。
 
----
+### 2. 配置团队
+根据项目类型选择合适的角色组合：
 
-## 快速开始
+**Web全栈项目**: TeamLead + PM + Architect + Frontend + Backend + QA + DevOps + Designer
 
-### 1. 阅读设计文档
-```bash
-cat AGENT_WORKFLOW.md        # 工作流设定
-cat team_composition_plan.md  # 团队角色定义
-```
+**移动端项目**: TeamLead + PM + Architect + Mobile×2 + Backend + QA + Designer
 
-### 2. 在新项目中应用
+**数据/AI项目**: TeamLead + PM + DataEngineer + MLengineer + Backend + QA
 
-```bash
-# 在CodeBuddy中创建团队
-# 参考 agent_prompts/ 目录下的角色定义
-# 使用 Task 工具孵化各Agent到新团队
-```
+**游戏项目**: TeamLead + PM + GameDesigner + Programmer×2 + Artist + QA
 
-### 3. 适配到你的项目
+### 3. 套用提示词
+从 [agent_prompts/](./agent_prompts/) 选择角色，填入具体技术栈即可。
 
-1. 复制 `agent_prompts/` 中相关的角色提示词
-2. 修改提示词中的项目路径和具体任务
-3. 参考 `AGENT_WORKFLOW.md` 中的通信协议设置团队
+### 4. 配置工作流
+参考 [AGENT_WORKFLOW.md](./AGENT_WORKFLOW.md) 设置SOP流程。
 
 ---
 
-## 设计原则
+## 🎯 核心特性
 
-| 原则 | 说明 |
-|------|------|
-| **单一PM** | 每个项目一个PM，统一管理排程和交付 |
-| **共享文件规则** | 明确冲突规则（如状态机优先于手牌） |
-| **静默等待** | Team-lead不提前输出，收集全结果后统一汇报 |
-| **Shutdown协议** | 工作完成时有序关闭所有Agent |
-| **优先级仲裁** | 跨项目冲突由team-lead按优先级裁决 |
-
----
-
-## 当前团队状态
-
-| 项目 | P0进度 | 下一里程碑 |
-|------|:------:|-----------|
-| Claw | P0.3 开发中 | 中断恢复 + 地势效果 + 集成测试 |
-| AI写作教练 | 产品设计完成 | V1 Phase 1 启动 |
+- **通用化设计**: 不与任何特定项目、语言、框架绑定
+- **SOP驱动**: 借鉴软件工程标准操作流程，确保输出质量
+- **多架构模式**: 支持Supervisor、Pipeline、Swarm、Router、Handoff五种协作模式
+- **模块化提示词**: 分层、条件化的系统提示词设计，可灵活组装
+- **完整角色库**: 12+通用角色，覆盖软件开发生命周期
+- **质量保障**: 内置Code Review、安全审查、测试验证机制
 
 ---
 
-## 关联仓库
+## 📚 文档导航
 
-| 项目 | GitHub |
-|------|--------|
-| Agent设计（本项目） | `github.com/skyblade47/agent-design` |
-| Claw·猫咪大战 | `github.com/skyblade47/claw` |
-| AI写作教练 | `github.com/skyblade47/ai-writing-coach` |
+| 文档 | 内容 | 适合读者 |
+|------|------|---------|
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | 5种多Agent协作架构模式 | 架构师、Tech Lead |
+| [AGENT_WORKFLOW.md](./AGENT_WORKFLOW.md) | SOP驱动的标准开发流程 | PM、项目经理 |
+| [ROLES_SPECIFICATION.md](./ROLES_SPECIFICATION.md) | 角色职责矩阵与选配指南 | 团队组建者 |
+| [PROMPT_ENGINEERING.md](./PROMPT_ENGINEERING.md) | 提示词工程方法论 | 提示词工程师 |
+| [COMMUNICATION_PROTOCOL.md](./COMMUNICATION_PROTOCOL.md) | Agent间通信协议设计 | 框架开发者 |
 
 ---
 
-## 许可
+## 🔧 技术无关性
 
-MIT License — 团队设计方案可自由适配重用。
+本设计方案是**框架和语言无关的**。你可以将其应用于：
+
+- **Agent框架**: CodeBuddy Teams, CrewAI, AutoGen, LangGraph, 或自定义编排
+- **LLM后端**: Claude, GPT, Gemini, DeepSeek, 或任何支持tool-use的模型
+- **技术栈**: React/Vue/Angular, Node/Python/Go/Rust, SQL/NoSQL, 任意组合
+- **项目类型**: Web应用, 移动App, 游戏, 数据管道, CLI工具, API服务
+
+---
+
+## 📄 许可证
+
+MIT License — 自由使用、修改和分发。
