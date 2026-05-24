@@ -1,0 +1,16 @@
+{
+  "project_name": "hermes_demo_lib",
+  "project_type": "python_library",
+  "created_at": "2026-05-24T14:35:39.093772",
+  "agents": {
+    "backend_developer": {
+      "enabled": true
+    },
+    "frontend_developer": {
+      "enabled": false
+    },
+    "devops": {
+      "enabled": true
+    }
+  }
+}

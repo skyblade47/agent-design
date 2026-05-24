@@ -1,0 +1,16 @@
+{
+  "project_name": "my-awesome-project",
+  "project_type": "python_library",
+  "created_at": "2026-05-24T14:28:17.543648",
+  "agents": {
+    "backend_developer": {
+      "enabled": true
+    },
+    "frontend_developer": {
+      "enabled": false
+    },
+    "devops": {
+      "enabled": true
+    }
+  }
+}

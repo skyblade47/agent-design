@@ -1,0 +1,9 @@
+# Core dependencies
+# Add your dependencies here
+
+# Development dependencies
+pytest>=7.0
+pytest-cov>=4.0
+black>=23.0
+isort>=5.12
+mypy>=1.0
