@@ -324,4 +324,99 @@ send_message(to="architect", content={
 
 ---
 
-> **核心原则**: Agent间的通信质量决定了团队的协作效率。结构化、可追溯、最小上下文的通信协议是好架构的基础。
+## 9. v2.0 高级通信机制
+
+### 9.1 批量汇报 (Batch Reporting)
+
+**问题**: 在大型Agent团队中，每个子Agent完成后立即汇报会产生大量噪音，消耗用户注意力。
+
+**解决方案**: Team Lead 静默收集所有子Agent消息，全部完成（或超时）后一次性汇总汇报。
+
+```json
+// 综合汇总报告格式
+{
+  "type": "batch_report",
+  "content": {
+    "summary": "## 综合汇报：[任务名称] 全部完成",
+    "agents": [
+      { "name": "agent-a", "task": "任务A", "status": "completed", "output": "产出XXX" },
+      { "name": "agent-b", "task": "任务B", "status": "completed", "output": "产出YYY" },
+      { "name": "agent-c", "task": "任务C", "status": "timeout", "known_info": "..." }
+    ],
+    "remaining_issues": ["问题1", "问题2"],
+    "next_steps": ["建议1"]
+  }
+}
+```
+
+**规则**:
+- ✅ 等待全部活跃子Agent完成（或超时5分钟）
+- ✅ 生成一份综合汇总报告
+- ❌ 禁止每个子Agent完成后单独汇报
+- ❌ 禁止转发子Agent原始消息
+- 仅接收 `recipient="main"` 的汇总报告
+
+### 9.2 孵化审批流 (Spawn Approval Flow)
+
+**问题**: Agent团队可能无序膨胀，导致成本失控和管理混乱。
+
+**解决方案**: 添加孵化审批流程，任何新Agent的创建都需要经过用户确认。
+
+```
+Team Lead 识别缺口
+       │
+       ▼
+向 main 提交孵化提案:
+  "建议孵化 {N} 个新子Agent：
+   1. {name} — {role} — {skill set}
+   2. {name} — {role} — {skill set}
+   孵化理由：{why}
+   请确认是否批准孵化。"
+       │
+       ▼
+  User 审核批准（或拒绝）
+       │
+       ▼
+  main 执行 task 工具孵化
+```
+
+### 9.3 异步排序 (Async Sequencing)
+
+**问题**: 多个Agent并行工作时，存在隐式依赖关系，需要有序执行。
+
+**解决方案**: 在启动子Agent的prompt中声明依赖关系，Agent自行等待前置条件。
+
+| 依赖类型 | Prompt中怎么写 |
+|---------|---------------|
+| A产出素材 → B加载素材 | B: "等待A完成素材输出到 assets/ 后再渲染" |
+| A修复代码 → C验证 | C: "等待A修复完成后执行验收" |
+| 无依赖 | 所有Agent同时启动 |
+| 需审批关卡 | A产出后Team Lead审查，再启动B |
+
+**格式**:
+```
+"你的前置依赖：
+- 等待 {agent-X} 产出 {具体产出物} 后再开始
+- 产出 {具体产出物} 后，send_message 通知 {agent-Y}"
+```
+
+### 9.4 双层通信架构
+
+v2.0 引入 Dev Lead 中间层后的完整通信流:
+
+```
+Specialist → Dev Lead inbox → Team Lead inbox → User
+    ↑              │                  │
+    └──────────────┴──────────────────┘
+          (经由 Team Lead 汇总后返程)
+```
+
+**通信规则**:
+- Specialist 只与自己的 Dev Lead 通信
+- Dev Lead 负责汇总本项目 Specialist 的产出
+- Team Lead 收集所有 Dev Lead 的汇总，再向用户做最终汇报
+- 跨项目协调仅通过 Team Lead 进行
+
+---
+
+> **核心原则**: Agent间的通信质量决定了团队的协作效率。结构化、可追溯、最小上下文的通信协议是好架构的基础。v2.0 新增的批量汇报、孵化审批流和异步排序三大机制，进一步优化了大规模Agent团队的通信效率。

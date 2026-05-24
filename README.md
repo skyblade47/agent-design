@@ -1,7 +1,7 @@
 # 🏗️ DevAgent Framework — 通用软件开发多Agent协作框架
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)]()
+[![Version](https://img.shields.io/badge/version-2.1.0-green.svg)]()
 
 > 一套通用的、可复用的AI Agent团队设计方案。将软件工程的最佳实践（SOP、Code Review、CI/CD）与多Agent协作架构相结合，让AI Agent像专业软件团队一样工作。
 
@@ -83,7 +83,8 @@ agent-design/
 
 - **通用化设计**: 不与任何特定项目、语言、框架绑定
 - **SOP驱动**: 借鉴软件工程标准操作流程，确保输出质量
-- **多架构模式**: 支持Supervisor、Pipeline、Swarm、Router、Handoff五种协作模式
+- **多架构模式**: 支持Supervisor、Pipeline、Swarm、Router、Handoff、Double-Layer Orchestration **六种**协作模式
+- **双层编排 (v2.0)**: 引入 Dev Lead 中间层 + 批量汇报/孵化审批流/异步排序三大机制，支持多项目并行管理
 - **模块化提示词**: 分层、条件化的系统提示词设计，可灵活组装
 - **完整角色库**: 12+通用角色，覆盖软件开发生命周期
 - **质量保障**: 内置Code Review、安全审查、测试验证机制

@@ -370,4 +370,101 @@ workflow:
 
 ---
 
-> **核心理念**: `Code = SOP(Team)` — 好的软件不是一个人写出来的，是通过标准化流程由专业团队协作产出的。Agent团队也是如此。
+## 11. v2.0 双层编排配置（多项目管理）⭐ 新增
+
+当需要同时管理多个项目时，推荐使用 Double-Layer Orchestration 模式。
+
+### 11.1 架构配置
+
+```yaml
+workflow:
+  mode: double_layer_orchestration
+  version: "2.0"
+  orchestrator:
+    team_lead:
+      role: "跨项目协调+全局审批+最终汇报"
+      mechanics:
+        batch_reporting:
+          enabled: true
+          timeout_minutes: 5
+          report_to: "main"
+        spawn_approval_flow:
+          enabled: true
+          proposal_to: "main"
+          executor: "main"
+        async_sequencing:
+          enabled: true
+          strategy: "prompt-based dependency declaration"
+  dev_leads:
+    - id: "claw-dev"
+      project: "Claw (Godot卡牌游戏)"
+      members: ["game-logic", "game-ui", "pixel-art", "qa"]
+      priority: 1
+    - id: "wc-dev"
+      project: "AI写作教练 (Electron+React)"
+      members: ["frontend", "backend", "ui-designer", "qa"]
+      priority: 2
+    - id: "pm-legal"
+      project: "法律管理系统"
+      status: "paused"
+      members: []
+```
+
+### 11.2 多项目工作流
+
+```
+用户需求
+    │
+    ▼
+Team Lead 分析+路由
+    │
+    ├─ Claw相关 → claw-dev (Dev Lead)
+    │   ├─ 游戏逻辑 → claw-game-logic (Specialist)
+    │   ├─ UI开发 → claw-game-ui (Specialist)
+    │   └─ 素材 → claw-pixel-art (Specialist)
+    │
+    ├─ 写作教练相关 → wc-dev (Dev Lead)
+    │   ├─ 前端 → wc-frontend (Specialist)
+    │   ├─ 后端 → wc-backend (Specialist)
+    │   └─ UI设计 → wc-ui-designer (Specialist)
+    │
+    └─ 暂停项目 → 不分配资源
+```
+
+### 11.3 Team Lead 行为准则（TEAM_LEAD_RULES.md）
+
+每个双层编排的 Team Lead 必须遵守运行时行为规范：
+
+```
+初始化检查清单:
+☑ 读取 AGENT_WORKFLOW.md — 团队架构
+☑ 读取 TEAM_LEAD_RULES.md — 行为准则
+☑ 读取 orchestrator/config.json — 团队配置
+☑ 读取自己的 inbox — 历史消息
+
+核心规则:
+☑ 批量汇报：静默收集，全部完成后一次性汇总
+☑ 孵化审批：先提交提案，用户确认后再孵化
+☑ 异步排序：prompt中声明依赖关系
+☑ 不转发子Agent原始消息
+```
+
+### 11.4 暂停/恢复机制
+
+```yaml
+# 暂停项目
+shutdown_request: 
+  to: "pm-legal"
+  reason: "优先级调整，暂时暂停"
+  archive: "Diagnostic report saved to inbox"
+
+# 恢复项目
+resume:
+  project: "pm-legal"
+  from: "inbox archive"
+  steps: ["恢复诊断报告", "评估当前状态", "更新排程"]
+```
+
+---
+
+> **核心理念**: `Code = SOP(Team)` — 好的软件不是一个人写出来的，是通过标准化流程由专业团队协作产出的。Agent团队也是如此。v2.0 双层编排通过引入Dev Lead中间层、批量汇报、孵化审批流和异步排序机制，使多项目并行管理成为可能。
